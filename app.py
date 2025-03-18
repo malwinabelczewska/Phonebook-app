@@ -82,7 +82,16 @@ def delete_contact(name):
         return f"Deleted contact for {name}"
     else:
         return f"No contact found for {name}"
-
+def get_contact_by_phone(phone):
+    conn = sqlite3.connect('phonebook.db')
+    cursor = conn.cursor()
+    cursor.execute('SELECT name FROM contacts WHERE phone LIKE ?', (f"%{phone}%",))
+    result = cursor.fetchone()
+    conn.close()
+    if result:
+        return f"The number {phone} belongs to {result[0]}"
+    else:
+        return f"No contact found with phone number {phone}"
 # Initialize OpenAI client
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
@@ -94,7 +103,7 @@ def process_command_with_llm(command):
     Your task is to interpret user commands and extract the necessary information.
     Always respond in JSON format with the following structure:
     {
-        "action": "add" | "get" | "list" | "update" | "delete" | "unknown",
+        "action": "add" | "get" | "get_by_phone" | "list" | "update" | "delete" | "unknown",
         "name": "extracted name" or null if not applicable,
         "phone": "extracted phone number" or null if not applicable,
         "confidence": a value between 0 and 1 indicating your confidence in the interpretation
@@ -138,6 +147,8 @@ def process_command_with_llm(command):
             return update_contact(name, phone)
         elif action == "delete" and name:
             return delete_contact(name)
+        elif action == "get_by_phone" and phone:
+            return get_contact_by_phone(phone)
         else:
             return "I couldn't understand that command. Please try again."
 
