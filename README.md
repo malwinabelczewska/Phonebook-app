@@ -22,7 +22,7 @@ A digital phone book application that allows users to manage contacts using natu
 - **Environment Management**: dotenv for API key management
 
 ### Technology Choices
-- **Gradio**: Selected for its simplicity in creating web interfaces for ML applications with minimal code. Perfect for this interview task as it allows focusing on core functionality rather than frontend development.
+- **Gradio**: Selected for its simplicity in creating web interfaces for ML applications with minimal code. Perfect for this task as it allows focusing on core functionality rather than frontend development.
 - **SQLite**: Chosen for its lightweight, serverless nature that requires no configuration while still providing a robust SQL interface. Ideal for this simple application where a full database server would be overkill.
 
 ## Installation
@@ -49,7 +49,7 @@ A digital phone book application that allows users to manage contacts using natu
 ## Usage
 1. Run the application:
    ```
-   python app.py
+   python main.py
    ```
 2. Open your browser and navigate to the URL shown in the terminal (typically http://127.0.0.1:7860)
 3. Enter commands using natural language. Examples:
