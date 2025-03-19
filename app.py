@@ -10,10 +10,14 @@ load_dotenv()
 def init_db():
     conn = sqlite3.connect('phonebook.db')
     cursor = conn.cursor()
+
+    # Drop the existing table if it exists
+    cursor.execute('DROP TABLE IF EXISTS contacts')
+
+    # Create a new table with name as the primary key
     cursor.execute('''
     CREATE TABLE IF NOT EXISTS contacts (
-        id INTEGER PRIMARY KEY,
-        name TEXT NOT NULL,
+        name TEXT PRIMARY KEY,
         phone TEXT NOT NULL
     )
     ''')
@@ -24,10 +28,18 @@ def init_db():
 def add_contact(name, phone):
     conn = sqlite3.connect('phonebook.db')
     cursor = conn.cursor()
-    cursor.execute('INSERT INTO contacts (name, phone) VALUES (?, ?)', (name, phone))
-    conn.commit()
-    conn.close()
-    return f"Added {name} with phone number {phone}"
+
+    try:
+        cursor.execute('INSERT INTO contacts (name, phone) VALUES (?, ?)', (name, phone))
+        conn.commit()
+        result = f"Added {name} with phone number {phone}"
+    except sqlite3.IntegrityError:
+        # This occurs when trying to insert a duplicate name
+        result = f"A contact with the name '{name}' already exists. Use update instead."
+    finally:
+        conn.close()
+
+    return result
 
 def get_contact(name):
     conn = sqlite3.connect('phonebook.db')
@@ -80,6 +92,7 @@ def delete_contact(name):
         return f"Deleted contact for {name}"
     else:
         return f"No contact found for {name}"
+
 def get_contact_by_phone(phone):
     conn = sqlite3.connect('phonebook.db')
     cursor = conn.cursor()
@@ -90,6 +103,7 @@ def get_contact_by_phone(phone):
         return f"The number {phone} belongs to {result[0]}"
     else:
         return f"No contact found with phone number {phone}"
+
 # Initialize OpenAI client
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY"))
 
