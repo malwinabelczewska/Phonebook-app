@@ -6,8 +6,6 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-# Rest of your code...
-
 # Initialize SQLite Database
 def init_db():
     conn = sqlite3.connect('phonebook.db')
