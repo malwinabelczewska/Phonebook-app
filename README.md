@@ -77,5 +77,3 @@ The application uses a simple SQLite database with a single `contacts` table:
 
 This design ensures each contact name is unique in the database, preventing duplicate entries.
 
-## Development Notes
-As someone with limited experience in application development, I utilized AI assistance (including Claude and similar tools) to help with code design, implementation, and problem-solving. This approach allowed me to create a functional application while learning more about Python web development, database interactions, and integration with AI services.
